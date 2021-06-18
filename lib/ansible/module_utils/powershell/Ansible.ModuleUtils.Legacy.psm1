@@ -363,7 +363,7 @@ Function Get-PendingRebootStatus
     $featureData = Invoke-CimMethod -EA Ignore -Name GetServerFeature -Namespace root\microsoft\windows\servermanager -Class MSFT_ServerManagerTasks
     $regData = Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager" "PendingFileRenameOperations" -EA Ignore
     $CBSRebootStatus = Get-ChildItem "HKLM:\\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing"  -ErrorAction SilentlyContinue| Where-Object {$_.PSChildName -eq "RebootPending"}
-    if(($featureData -and $featureData.RequiresReboot) -or $regData -or $CBSRebootStatus)
+    if(($featureData -ne $false -and $featureData.RequiresReboot -ne $False) -or $regData -or $CBSRebootStatus)
     {
         return $True
     }
